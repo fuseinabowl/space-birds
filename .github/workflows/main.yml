@@ -43,6 +43,13 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Upload tests
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results
+          path: artifacts
+
       # Build
       - name: Build project
         uses: game-ci/unity-builder@v2
