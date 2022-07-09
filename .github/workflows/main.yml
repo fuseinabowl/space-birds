@@ -61,6 +61,7 @@ jobs:
           path: build
 
 name: Acquire activation file
+  
 on:
   workflow_dispatch: {}
 jobs:
