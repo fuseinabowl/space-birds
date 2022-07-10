@@ -11,6 +11,7 @@ public class TurnRunner : MonoBehaviour
 
     private void Start()
     {
+        fixedUpdatesRemainingThisTurn = 0;
         PauseGame();
     }
 
@@ -18,6 +19,9 @@ public class TurnRunner : MonoBehaviour
     {
         if (--fixedUpdatesRemainingThisTurn <= 0)
         {
+            // FixedUpdate can be called before PauseGame can take effect
+            // from Start() on the first frame
+            fixedUpdatesRemainingThisTurn = 0;
             PauseGame();
         }
     }
