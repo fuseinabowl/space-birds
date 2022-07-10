@@ -71,6 +71,6 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: windows
-          ITCH_GAME: gmtk-2022-game-jam
+          ITCH_GAME: space-birds
           ITCH_USER: fuseinabowl
           PACKAGE: build
