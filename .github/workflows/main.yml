@@ -65,3 +65,12 @@ jobs:
         with:
           name: Build
           path: build
+
+      # Upload to itch
+      - uses: manleydev/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: windows
+          ITCH_GAME: gmtk-2022-game-jam
+          ITCH_USER: fuseinabowl
+          PACKAGE: build/windows
