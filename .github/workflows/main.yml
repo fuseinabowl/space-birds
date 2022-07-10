@@ -36,19 +36,19 @@ jobs:
             Library-
 
       # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Run tests
+      #   uses: game-ci/unity-test-runner@v2
+      #   env:
+      #     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      #   with:
+      #     githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload tests
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: Test results
-          path: artifacts
+      # - name: Upload tests
+      #   uses: actions/upload-artifact@v2
+      #   if: always()
+      #   with:
+      #     name: Test results
+      #     path: artifacts
 
       # Build
       - name: Build project
