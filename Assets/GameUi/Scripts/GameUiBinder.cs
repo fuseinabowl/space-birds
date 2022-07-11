@@ -14,7 +14,13 @@ public class GameUiBinder : MonoBehaviour
         var continueButton = document.rootVisualElement.Q<VisualElement>("screen").Q<Button>("continue");
         continueButton.clicked += () => TriggerNextTurn(continueButton);
 
-        // bind to the turn runner
+        continueButton.SetEnabled(false);
+        turnRunner.onStartGame.AddListener(() => OnGameStarted(continueButton));
+    }
+
+    private void OnGameStarted(Button continueButton)
+    {
+        continueButton.SetEnabled(true);
     }
 
     private void TriggerNextTurn(Button continueButton)

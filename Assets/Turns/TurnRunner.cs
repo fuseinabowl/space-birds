@@ -1,27 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Assertions;
 
 public class TurnRunner : MonoBehaviour
 {
     [SerializeField]
+    private int prewarmEffectsSetupSteps = 5;
+    [SerializeField]
+    private int prewarmEffectsDuration = 15;
+
+    [SerializeField]
     private int turnLengthInFixedUpdates = 60;
     private int fixedUpdatesRemainingThisTurn = 0;
 
+    [SerializeField]
+    public UnityEvent onStartGame = null;
+
     private void Start()
     {
+        StartCoroutine(PrewarmEffectsThenStartGame());
+    }
+
+    private IEnumerator PrewarmEffectsThenStartGame()
+    {
+        Time.timeScale = 100f;
+        Debug.Log($"Waiting for prewarm, time is {Time.time}, timescale: {Time.timeScale}");
+
+        // Unity has to spend some whole frames setting up the engine and the scene before the VFXes start running
+        for (var i = 0; i < prewarmEffectsSetupSteps; ++i)
+        {
+            yield return 0;
+        }
+        // the VFXes will have started now, run them
+        yield return new WaitForSeconds(prewarmEffectsDuration);
+
+        Debug.Log($"Prewarm complete, time is {Time.time}, timescale: {Time.timeScale}");
         fixedUpdatesRemainingThisTurn = 0;
         PauseGame();
+        onStartGame?.Invoke();
     }
 
     private void FixedUpdate()
     {
-        if (--fixedUpdatesRemainingThisTurn <= 0)
+        if (--fixedUpdatesRemainingThisTurn == 0)
         {
-            // FixedUpdate can be called before PauseGame can take effect
-            // from Start() on the first frame
-            fixedUpdatesRemainingThisTurn = 0;
             PauseGame();
         }
     }

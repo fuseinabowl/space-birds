@@ -557,7 +557,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca19a50144838e54ba12365d061afc32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prewarmEffectsSetupSteps: 5
+  prewarmEffectsDuration: 15
   turnLengthInFixedUpdates: 60
+  onStartGame:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &2050827203
 Transform:
   m_ObjectHideFlags: 0
