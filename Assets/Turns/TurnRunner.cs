@@ -26,7 +26,6 @@ public class TurnRunner : MonoBehaviour
     private IEnumerator PrewarmEffectsThenStartGame()
     {
         Time.timeScale = 100f;
-        Debug.Log($"Waiting for prewarm, time is {Time.time}, timescale: {Time.timeScale}");
 
         // Unity has to spend some whole frames setting up the engine and the scene before the VFXes start running
         for (var i = 0; i < prewarmEffectsSetupSteps; ++i)
@@ -36,7 +35,6 @@ public class TurnRunner : MonoBehaviour
         // the VFXes will have started now, run them
         yield return new WaitForSeconds(prewarmEffectsDuration);
 
-        Debug.Log($"Prewarm complete, time is {Time.time}, timescale: {Time.timeScale}");
         fixedUpdatesRemainingThisTurn = 0;
         PauseGame();
         onStartGame?.Invoke();
