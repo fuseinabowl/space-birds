@@ -142,6 +142,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotateOrigin: {fileID: 1571404276}
   rotateSpeed: 60
+--- !u!4 &130091960 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3976011091732821211, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
+  m_PrefabInstance: {fileID: 4527902329509689477}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &459109294
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +243,7 @@ GameObject:
   - component: {fileID: 496072315}
   - component: {fileID: 496072318}
   - component: {fileID: 496072319}
+  - component: {fileID: 496072320}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -278,7 +284,7 @@ Camera:
     height: 1
   near clip plane: 500
   far clip plane: 600
-  field of view: 10
+  field of view: 45
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -361,6 +367,21 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 0cfc591348e81fd429d4978ce299cd90, type: 2}
+--- !u!114 &496072320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496072314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e50e7a4a5f7ac4ca54a9ca5b3ffe5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 130091960}
+  clipWidth: 100
+  clipMiddleDistance: 100
 --- !u!1 &548896815
 GameObject:
   m_ObjectHideFlags: 0
@@ -15004,7 +15025,7 @@ Transform:
   m_GameObject: {fileID: 1411184065}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -49, z: 0}
-  m_LocalScale: {x: 240, y: 135, z: 0.125}
+  m_LocalScale: {x: 320, y: 180, z: 0.16666667}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -15034,7 +15055,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1571404275}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.059684, y: 19.83521, z: -2.1}
+  m_LocalPosition: {x: 20, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
