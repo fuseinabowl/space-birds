@@ -71,6 +71,6 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: windows
-          ITCH_GAME: spacebirds
+          ITCH_GAME: stardawn
           ITCH_USER: fuseinabowl
           PACKAGE: build
