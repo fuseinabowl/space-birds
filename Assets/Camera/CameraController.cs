@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
@@ -10,7 +11,8 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float clipMiddleDistance = 600f;
     [SerializeField]
-    private float viewWidth = 20f;
+    [FormerlySerializedAs("viewWidth")]
+    private float viewHeight = 20f;
 
     [SerializeField]
     private float dragSpeed = 1f;
@@ -34,7 +36,7 @@ public class CameraController : MonoBehaviour
     {
         camera.nearClipPlane = clipMiddleDistance - clipWidth / 2f;
         camera.farClipPlane = clipMiddleDistance + clipWidth / 2f;
-        camera.fieldOfView = Mathf.Rad2Deg * 2f * Mathf.Atan2(viewWidth, 2f * clipMiddleDistance);
+        camera.fieldOfView = Mathf.Rad2Deg * 2f * Mathf.Atan2(viewHeight, 2f * clipMiddleDistance);
     }
 
     private void Update()
@@ -52,7 +54,7 @@ public class CameraController : MonoBehaviour
         if (!Input.GetMouseButton(0)) return;
  
         var mousePositionDelta = camera.ScreenToViewportPoint(Input.mousePosition - dragClickStartPosition);
-        mousePositionDelta.Scale(new Vector3(viewWidth * camera.aspect, viewWidth, 0f));
+        mousePositionDelta.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
         var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
  
         transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
