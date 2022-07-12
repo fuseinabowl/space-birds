@@ -142,6 +142,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotateOrigin: {fileID: 1571404276}
   rotateSpeed: 60
+--- !u!4 &130091960 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3976011091732821211, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
+  m_PrefabInstance: {fileID: 4527902329509689477}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &459109294
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +244,6 @@ GameObject:
   - component: {fileID: 496072318}
   - component: {fileID: 496072319}
   - component: {fileID: 496072320}
-  - component: {fileID: 496072321}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -375,23 +379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e50e7a4a5f7ac4ca54a9ca5b3ffe5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTransform: {fileID: 130091960}
   clipWidth: 100
   clipMiddleDistance: 100
-  viewHeight: 80
-  dragSpeed: 1
---- !u!114 &496072321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496072314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edd3ae79956605e4694ba889708748d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraController: {fileID: 0}
+  viewWidth: 80
 --- !u!1 &548896815
 GameObject:
   m_ObjectHideFlags: 0
@@ -15083,7 +15074,6 @@ GameObject:
   - component: {fileID: 2031213913}
   - component: {fileID: 2031213912}
   - component: {fileID: 2031213914}
-  - component: {fileID: 2031213915}
   m_Layer: 5
   m_Name: On-screen UI
   m_TagString: Untagged
@@ -15135,92 +15125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnRunner: {fileID: 2050827202}
---- !u!114 &2031213915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031213911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: cd8bc19823a99d649a36765d351a255b, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 496072321}
-        m_TargetAssemblyTypeName: CameraInputProcessor, Camera
-        m_MethodName: OnClicked
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: c30bfd57-9d2e-4756-8f6f-9ce935c37ff5
-    m_ActionName: Player/MainScreenClick[/Mouse/leftButton,/Touchscreen/primaryTouch/tap]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5caaa86d-9178-4cf8-b743-9aa5b133c0a4
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: adcaea98-bab7-4305-b99d-f6f1e5020bcc
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 89becebb-8bb7-4115-b99d-b0c661f16e4b
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0e06810e-3b7a-4364-9924-116c414f35e9
-    m_ActionName: UI/Point[/Mouse/position,/Touchscreen/touch0/position,/Touchscreen/touch1/position,/Touchscreen/touch2/position,/Touchscreen/touch3/position,/Touchscreen/touch4/position,/Touchscreen/touch5/position,/Touchscreen/touch6/position,/Touchscreen/touch7/position,/Touchscreen/touch8/position,/Touchscreen/touch9/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 34620dd6-a535-45e0-8046-4d89efc4e471
-    m_ActionName: UI/Click[/Mouse/leftButton,/Touchscreen/touch0/press,/Touchscreen/touch1/press,/Touchscreen/touch2/press,/Touchscreen/touch3/press,/Touchscreen/touch4/press,/Touchscreen/touch5/press,/Touchscreen/touch6/press,/Touchscreen/touch7/press,/Touchscreen/touch8/press,/Touchscreen/touch9/press]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5de8d76a-d5d6-4109-82d0-fa66ec3462aa
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: aa6973ef-34f6-4d80-88ac-fb491f694955
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 27be518a-8d5f-4fe3-ade6-c84490e017fb
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 280c641a-a90f-42a2-9ee6-7343f5470922
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 11135e9a-d0f2-42d9-83dd-91a820d8438b
-    m_ActionName: UI/TrackedDeviceOrientation
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1 &2050827201
 GameObject:
   m_ObjectHideFlags: 0

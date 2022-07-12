@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
@@ -17,9 +16,6 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private float dragSpeed = 1f;
-
-    public delegate Vector3 GetCursorPosition();
-    private GetCursorPosition cachedCursorPositionGetter = null;
 
     private Vector3 dragClickStartPosition = Vector3.zero;
     private Vector3 dragCameraStartPosition = Vector3.zero;
@@ -46,37 +42,21 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         SetCameraProperties();
-
-        if (cachedCursorPositionGetter != null)
+ 
+        if (Input.GetMouseButtonDown(0))
         {
-            UpdateDrag(cachedCursorPositionGetter());
+            dragClickStartPosition = Input.mousePosition;
+            dragCameraStartPosition = transform.position;
+            dragCameraStartPosition.Scale(new Vector3(1f, 0f, 1f));
+            return;
         }
-    }
-
-    public void StartDrag(GetCursorPosition cursorPositionGetter)
-    {
-        cachedCursorPositionGetter = cursorPositionGetter;
-        dragClickStartPosition = cachedCursorPositionGetter();
-        dragCameraStartPosition = transform.position;
-        dragCameraStartPosition.Scale(new Vector3(1f, 0f, 1f));
-    }
-
-    public void StopDrag()
-    {
-        cachedCursorPositionGetter = null;
-    }
-
-    public void UpdateDrag(Vector3 mousePosition)
-    {
-        var mousePositionDelta = camera.ScreenToViewportPoint(mousePosition - dragClickStartPosition);
+ 
+        if (!Input.GetMouseButton(0)) return;
+ 
+        var mousePositionDelta = camera.ScreenToViewportPoint(Input.mousePosition - dragClickStartPosition);
         mousePositionDelta.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
         var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
  
         transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
-    }
-
-    static private bool IsClickingOnUi()
-    {
-        return EventSystem.current.IsPointerOverGameObject();
     }
 }
