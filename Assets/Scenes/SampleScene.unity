@@ -15192,6 +15192,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2878554055917021946, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
+      propertyPath: RotationModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878554055917021946, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
+      propertyPath: InitialModule.startRotation.scalar
+      value: 6.283185
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878554055917021946, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
+      propertyPath: InitialModule.startRotation.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878554055917021946, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878554055917021946, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3976011091732821211, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
       propertyPath: m_RootOrder
       value: 7
