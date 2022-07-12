@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
     private float clipWidth = 100f;
     [SerializeField]
     private float clipMiddleDistance = 600f;
+    [SerializeField]
+    private float viewWidth = 20f;
 
     private new Camera camera = null;
 
@@ -22,12 +24,19 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        camera.nearClipPlane = clipMiddleDistance - clipWidth / 2f;
-        camera.farClipPlane = clipMiddleDistance + clipWidth / 2f;
+        SetCameraProperties();
     }
 
-    void Update()
+    private void SetCameraProperties()
+    {
+        camera.nearClipPlane = clipMiddleDistance - clipWidth / 2f;
+        camera.farClipPlane = clipMiddleDistance + clipWidth / 2f;
+        camera.fieldOfView = Mathf.Rad2Deg * 2f * Mathf.Atan2(viewWidth, 2f * clipMiddleDistance);
+    }
+
+    private void Update()
     {
         transform.position = targetTransform.position + Vector3.up * clipMiddleDistance;
+        SetCameraProperties();
     }
 }

@@ -382,6 +382,7 @@ MonoBehaviour:
   targetTransform: {fileID: 130091960}
   clipWidth: 100
   clipMiddleDistance: 100
+  viewWidth: 80
 --- !u!1 &548896815
 GameObject:
   m_ObjectHideFlags: 0
