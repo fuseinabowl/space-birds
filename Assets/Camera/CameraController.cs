@@ -52,7 +52,6 @@ public class CameraController : MonoBehaviour
         if (!Input.GetMouseButton(0)) return;
  
         var mousePositionDelta = camera.ScreenToViewportPoint(Input.mousePosition - dragClickStartPosition);
-        Debug.Log($"Position delta: {mousePositionDelta}");
         mousePositionDelta.Scale(new Vector3(viewWidth * camera.aspect, viewWidth, 0f));
         var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
  
