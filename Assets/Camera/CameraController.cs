@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Camera))]
@@ -28,6 +29,8 @@ public class CameraController : MonoBehaviour
     private new Camera camera = null;
 
     private float targetViewHeight = 0f;
+
+    private bool isDragging = false;
 
     private void Awake()
     {
@@ -59,21 +62,29 @@ public class CameraController : MonoBehaviour
 
     private void HandleCameraDrag()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !IsClickingOnUi())
         {
             dragClickStartPosition = Input.mousePosition;
             dragCameraStartPosition = transform.position;
             dragCameraStartPosition.Scale(new Vector3(1f, 0f, 1f));
+            isDragging = true;
             return;
         }
  
-        if (!Input.GetMouseButton(0)) return;
+        if (!Input.GetMouseButton(0))
+        {
+            isDragging = false;
+            return;
+        }
  
-        var mousePositionDelta = camera.ScreenToViewportPoint(Input.mousePosition - dragClickStartPosition);
-        mousePositionDelta.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
-        var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
- 
-        transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
+        if (isDragging)
+        {
+            var mousePositionDelta = camera.ScreenToViewportPoint(Input.mousePosition - dragClickStartPosition);
+            mousePositionDelta.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
+            var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
+     
+            transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
+        }
     }
 
     private void HandleCameraZoomControls()
@@ -94,5 +105,10 @@ public class CameraController : MonoBehaviour
     {
         var delta = targetViewHeight - viewHeight;
         viewHeight = targetViewHeight - delta * Mathf.Exp(-Time.unscaledDeltaTime * zoomEasingSpeed);
+    }
+
+    private bool IsClickingOnUi()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 }
