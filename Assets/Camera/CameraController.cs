@@ -17,6 +17,8 @@ public class CameraController : MonoBehaviour
     private Vector2 viewHeightRange = new Vector2(10f, 40f);
     [SerializeField]
     private float zoomScrollSpeed = 1f;
+    [SerializeField]
+    private float zoomEasingSpeed = 1f;
 
     [SerializeField]
     private float dragSpeed = 1f;
@@ -24,6 +26,8 @@ public class CameraController : MonoBehaviour
     private Vector3 dragClickStartPosition = Vector3.zero;
     private Vector3 dragCameraStartPosition = Vector3.zero;
     private new Camera camera = null;
+
+    private float targetViewHeight = 0f;
 
     private void Awake()
     {
@@ -34,6 +38,7 @@ public class CameraController : MonoBehaviour
     {
         SetCameraProperties();
         transform.position = Vector3.up * clipMiddleDistance;
+        targetViewHeight = viewHeight;
     }
 
     private void SetCameraProperties()
@@ -45,7 +50,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        HandleCameraZoom();
+        HandleCameraZoomControls();
+        HandleCameraZoomEasing();
         HandleCameraDrag();
 
         SetCameraProperties();
@@ -70,17 +76,23 @@ public class CameraController : MonoBehaviour
         transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
     }
 
-    private void HandleCameraZoom()
+    private void HandleCameraZoomControls()
     {
         var scroll = Input.mouseScrollDelta.y;
         // use minus scroll to scroll-zoom in the intuitive direction
         var zoomLogDelta = -scroll * zoomScrollSpeed;
         if (zoomLogDelta != 0f)
         {
-            var currentViewHeightInLogSpace = Mathf.Log(viewHeight);
+            var currentViewHeightInLogSpace = Mathf.Log(targetViewHeight);
             var newViewHeightInLogSpace = currentViewHeightInLogSpace + zoomLogDelta;
             var newViewHeightInNormalSpace = Mathf.Exp(newViewHeightInLogSpace);
-            viewHeight = Mathf.Clamp(newViewHeightInNormalSpace, viewHeightRange.x, viewHeightRange.y);
+            targetViewHeight = Mathf.Clamp(newViewHeightInNormalSpace, viewHeightRange.x, viewHeightRange.y);
         }
+    }
+
+    private void HandleCameraZoomEasing()
+    {
+        var delta = targetViewHeight - viewHeight;
+        viewHeight = targetViewHeight - delta * Mathf.Exp(-Time.unscaledDeltaTime * zoomEasingSpeed);
     }
 }
