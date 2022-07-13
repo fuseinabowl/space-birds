@@ -6,17 +6,26 @@ using UnityEngine.Assertions;
 
 public class TurnRunner : MonoBehaviour
 {
-    [SerializeField]
-    private int turnLengthInFixedUpdates = 60;
     private int fixedUpdatesRemainingThisTurn = 0;
 
     [SerializeField]
     public UnityEvent onStartGame = null;
 
+    [SerializeField]
+    private TurnSettings turnSettings = null;
+
+    private float turnStartTime = 0f;
+
+    private void Awake()
+    {
+        Assert.IsNotNull(turnSettings);
+    }
+
     private void Start()
     {
         fixedUpdatesRemainingThisTurn = 0;
         PauseGame();
+        turnStartTime = Time.time - turnSettings.TurnLengthInSeconds;
         onStartGame?.Invoke();
     }
 
@@ -36,6 +45,11 @@ public class TurnRunner : MonoBehaviour
         Assert.AreEqual(fixedUpdatesRemainingThisTurn, 0);
         Time.timeScale = 0f;
 
+        foreach (var listener in turnSettings.turnListeners)
+        {
+            listener.OnTurnEnded();
+        }
+
         var cachedOnTurnComplete = callerOnTurnComplete;
         callerOnTurnComplete = null;
         cachedOnTurnComplete?.Invoke();
@@ -47,8 +61,16 @@ public class TurnRunner : MonoBehaviour
     {
         Assert.AreEqual(fixedUpdatesRemainingThisTurn, 0);
         Assert.AreEqual(callerOnTurnComplete, null);
+
+        turnStartTime += turnSettings.TurnLengthInSeconds;
+
         Time.timeScale = 1f;
-        fixedUpdatesRemainingThisTurn = turnLengthInFixedUpdates;
+        fixedUpdatesRemainingThisTurn = turnSettings.TurnLengthInFixedUpdates;
+
+        foreach (var listener in turnSettings.turnListeners)
+        {
+            listener.OnTurnStarted(turnStartTime);
+        }
 
         callerOnTurnComplete = onTurnComplete;
     }
