@@ -50,6 +50,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnSettings: {fileID: 11400000, guid: a001d6d1908de5b479821d6e968868b6, type: 2}
   nextTurnEndMarker: {fileID: 4680593125575339902}
+  extendVelocityDistanceWhenPlacingMarker: 20
+  rollMultiplier: 1
+  rollMultiplierThroughoutTurn:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.75
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &2091031674097617195
 PrefabInstance:
   m_ObjectHideFlags: 0

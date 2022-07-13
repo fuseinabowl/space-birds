@@ -15,6 +15,11 @@ public class ShipMover : MonoBehaviour, ITurnListener
     [SerializeField]
     private float extendVelocityDistanceWhenPlacingMarker = 20f;
 
+    [SerializeField]
+    private float rollMultiplier = 1f;
+    [SerializeField]
+    private AnimationCurve rollMultiplierThroughoutTurn = AnimationCurve.Constant(0f, 1f, 1f);
+
     private Vector2 turnStartPosition;
     private Vector2 turnEndPosition;
     private Vector2 midPoint;
@@ -48,8 +53,12 @@ public class ShipMover : MonoBehaviour, ITurnListener
         var angle = Mathf.Atan2(delta.x, delta.y);
         var rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up);
 
+        var acceleration = 2f * (turnStartPosition - 2f * midPoint + turnEndPosition);
+        var rollMagnitude = delta.normalized.x * acceleration.y - delta.normalized.y * acceleration.x;
+        var roll = Quaternion.AngleAxis(rollMagnitude * rollMultiplier * rollMultiplierThroughoutTurn.Evaluate(elapsedTimeProportionThisTurn), Vector3.forward);
+
         transform.position = FlatPositionToWorldPosition(position);
-        transform.rotation = rotation;
+        transform.rotation = rotation * roll;
     }
 
     private void OnDisable()
