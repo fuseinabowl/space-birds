@@ -39,8 +39,14 @@ public class ShipMover : MonoBehaviour, ITurnListener
         var elapsedTimeThisTurn = Time.time - turnStartTime;
         var elapsedTimeProportionThisTurn = elapsedTimeThisTurn / turnSettings.TurnLengthInSeconds;
         var position = QuadBezier(turnStartPosition, midPoint, turnEndPosition, elapsedTimeProportionThisTurn);
+        var delta = 2f * elapsedTimeProportionThisTurn * (turnStartPosition - 2f * midPoint + turnEndPosition)
+                  +                                 1f * (-2f * turnStartPosition + 2f * midPoint);
+
+        var angle = Mathf.Atan2(delta.x, delta.y);
+        var rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up);
 
         transform.position = FlatPositionToWorldPosition(position);
+        transform.rotation = rotation;
     }
 
     private void OnDisable()
