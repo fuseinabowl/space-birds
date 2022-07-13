@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Assertions;
 
 public class ShipMover : MonoBehaviour, ITurnListener
@@ -9,7 +10,7 @@ public class ShipMover : MonoBehaviour, ITurnListener
     private TurnSettings turnSettings = null;
 
     [SerializeField]
-    private Transform nextTurnEndPosition = null;
+    private ClickableObject nextTurnEndMarker = null;
 
     private Vector2 turnStartPosition;
     private Vector2 turnEndPosition;
@@ -19,7 +20,7 @@ public class ShipMover : MonoBehaviour, ITurnListener
     private void Awake()
     {
         Assert.IsNotNull(turnSettings);
-        Assert.IsNotNull(nextTurnEndPosition);
+        Assert.IsNotNull(nextTurnEndMarker);
     }
 
     private void Start()
@@ -39,7 +40,7 @@ public class ShipMover : MonoBehaviour, ITurnListener
         var elapsedTimeProportionThisTurn = elapsedTimeThisTurn / turnSettings.TurnLengthInSeconds;
         var position = QuadBezier(turnStartPosition, midPoint, turnEndPosition, elapsedTimeProportionThisTurn);
 
-        transform.position = new Vector3(position.x, 0f, position.y);
+        transform.position = FlatPositionToWorldPosition(position);
     }
 
     private void OnDisable()
@@ -68,11 +69,37 @@ public class ShipMover : MonoBehaviour, ITurnListener
 
     void ITurnListener.OnTurnStarted(float turnStartTime)
     {
-        var nextEndPosition = new Vector2(nextTurnEndPosition.position.x, nextTurnEndPosition.position.z);
+        var nextEndPosition = nextTurnEndMarker.TargetPosition;
         PrepareForNextTurn(turnStartTime, nextEndPosition);
+
+        HideMovementMarker();
     }
 
     void ITurnListener.OnTurnEnded()
     {
+        MoveMovementMarkerToContinuedMovementPosition();
+        ShowMovementMarker();
+    }
+
+    private void HideMovementMarker()
+    {
+        nextTurnEndMarker.gameObject.SetActive(false);
+    }
+
+    private void MoveMovementMarkerToContinuedMovementPosition()
+    {
+        var endVelocity = turnEndPosition - midPoint;
+        var extendedPosition = turnEndPosition + 2f * endVelocity;
+        nextTurnEndMarker.transform.position = FlatPositionToWorldPosition(extendedPosition);
+    }
+
+    private void ShowMovementMarker()
+    {
+        nextTurnEndMarker.gameObject.SetActive(true);
+    }
+
+    private Vector3 FlatPositionToWorldPosition(Vector2 vector)
+    {
+        return new Vector3(vector.x, 0f, vector.y);
     }
 }

@@ -25,6 +25,7 @@ public class ClickableObject : MonoBehaviour
     private float clickStartTime;
     private Vector2 preClickPosition;
     private Vector2 targetPosition;
+    public Vector2 TargetPosition => targetPosition;
 
     private void Awake()
     {
@@ -35,7 +36,8 @@ public class ClickableObject : MonoBehaviour
 
     private void OnEnable()
     {
-        targetPosition = new Vector2(transform.position.x, transform.position.z);
+        clickStartTime = 0f;
+        preClickPosition = targetPosition = new Vector2(transform.position.x, transform.position.z);
         remoteClickableObject = new ClickableObjects.ClickableObject{
             getCircle = GetCircle,
             onClicked = OnClicked,

@@ -123,30 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &129722179 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4680593125575339896, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
-  m_PrefabInstance: {fileID: 4527902329509689477}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &130091958 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4244437593353609463, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
-  m_PrefabInstance: {fileID: 4527902329509689477}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &130091959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 130091958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfa210f1c5bd2c74fb9fdea381e457db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSettings: {fileID: 11400000, guid: a001d6d1908de5b479821d6e968868b6, type: 2}
-  nextTurnEndPosition: {fileID: 129722179}
 --- !u!1 &459109294
 GameObject:
   m_ObjectHideFlags: 0
