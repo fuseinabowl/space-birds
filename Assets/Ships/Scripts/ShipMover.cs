@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Assertions;
@@ -20,10 +21,29 @@ public class ShipMover : MonoBehaviour, ITurnListener
     [SerializeField]
     private AnimationCurve rollMultiplierThroughoutTurn = AnimationCurve.Constant(0f, 1f, 1f);
 
+    [SerializeField]
+    private List<ParticleSystem> engineParticles = null;
+    private class EngineParticleData
+    {
+        public ParticleSystem system;
+        public float originalEmissionRate;
+        public float originalEmissionSpeed;
+    }
+    private List<EngineParticleData> engineParticleData = null;
+    [SerializeField]
+    private AnimationCurve engineRevToParticleRate = AnimationCurve.Constant(0f, 1f, 1f);
+    [SerializeField]
+    private AnimationCurve engineRevToParticleSpeed = AnimationCurve.Constant(0f, 1f, 1f);
+    [SerializeField]
+    private AnimationCurve engineRevToParticleConeAngle = AnimationCurve.Constant(0f, 1f, 0f);
+    [SerializeField]
+    private float engineRevReductionRate = 10f;
+
     private Vector2 turnStartPosition;
     private Vector2 turnEndPosition;
     private Vector2 midPoint;
     private float turnStartTime;
+    private float currentEngineRev;
 
     private void Awake()
     {
@@ -35,6 +55,11 @@ public class ShipMover : MonoBehaviour, ITurnListener
     {
         turnStartPosition = new Vector2(transform.position.x, transform.position.z);
         midPoint = turnStartPosition;
+        engineParticleData = engineParticles.Select(particles => new EngineParticleData{
+            system = particles,
+            originalEmissionRate = particles.emission.rateOverTimeMultiplier,
+            originalEmissionSpeed = particles.main.startSpeedMultiplier,
+        }).ToList();
     }
 
     private void OnEnable()
@@ -57,6 +82,21 @@ public class ShipMover : MonoBehaviour, ITurnListener
         var lateralAcceleration = delta.normalized.x * acceleration.y - delta.normalized.y * acceleration.x;
         var currentRollMultiplier = rollMultiplier * rollMultiplierThroughoutTurn.Evaluate(elapsedTimeProportionThisTurn);
         var roll = Quaternion.LookRotation(Vector3.forward, Vector3.up + Vector3.left * lateralAcceleration * currentRollMultiplier);
+
+        var transverseAcceleration = Vector2.Dot(delta.normalized, acceleration);
+        currentEngineRev = Mathf.Max(currentEngineRev - Time.deltaTime * engineRevReductionRate, transverseAcceleration);
+        var particleRateMultiplier = engineRevToParticleRate.Evaluate(currentEngineRev);
+        var particleSpeedMultiplier = engineRevToParticleSpeed.Evaluate(currentEngineRev);
+        var particleConeAngle = engineRevToParticleConeAngle.Evaluate(currentEngineRev);
+        foreach (var engineParticleSystem in engineParticleData)
+        {
+            var em = engineParticleSystem.system.emission;
+            em.rateOverTimeMultiplier = particleRateMultiplier * engineParticleSystem.originalEmissionRate;
+            var main = engineParticleSystem.system.main;
+            main.startSpeedMultiplier = particleSpeedMultiplier * engineParticleSystem.originalEmissionSpeed;
+            var shape = engineParticleSystem.system.shape;
+            shape.angle = particleConeAngle;
+        }
 
         transform.position = FlatPositionToWorldPosition(position);
         transform.rotation = rotation * roll;

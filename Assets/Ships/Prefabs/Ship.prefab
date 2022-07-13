@@ -94,6 +94,82 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  engineParticles:
+  - {fileID: 5775275687321449672}
+  - {fileID: 2878554055917021946}
+  engineRevToParticleRate:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.02
+      outSlope: 0.02
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 200
+      value: 5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  engineRevToParticleSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.0225
+      outSlope: 0.0225
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 400
+      value: 10
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  engineRevToParticleConeAngle:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.1
+      outSlope: 0.1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 250
+      value: 25
+      inSlope: 0.1
+      outSlope: 0.1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  engineRevReductionRate: 300
 --- !u!1001 &2091031674097617195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -154,6 +230,11 @@ PrefabInstance:
 --- !u!4 &5036348747321371651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6404227221489132840, guid: 3170e89ffeb9fc94487a4a75fa3d22ed, type: 3}
+  m_PrefabInstance: {fileID: 2091031674097617195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5775275687321449672 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5557776849277517283, guid: 3170e89ffeb9fc94487a4a75fa3d22ed, type: 3}
   m_PrefabInstance: {fileID: 2091031674097617195}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3915179273441299838
@@ -364,6 +445,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3170e89ffeb9fc94487a4a75fa3d22ed, type: 3}
+--- !u!198 &2878554055917021946 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5557776849277517283, guid: 3170e89ffeb9fc94487a4a75fa3d22ed, type: 3}
+  m_PrefabInstance: {fileID: 7697669020738311961}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3617515896800408113 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6404227221489132840, guid: 3170e89ffeb9fc94487a4a75fa3d22ed, type: 3}
