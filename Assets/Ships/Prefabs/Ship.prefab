@@ -51,7 +51,7 @@ MonoBehaviour:
   turnSettings: {fileID: 11400000, guid: a001d6d1908de5b479821d6e968868b6, type: 2}
   nextTurnEndMarker: {fileID: 4680593125575339902}
   extendVelocityDistanceWhenPlacingMarker: 20
-  rollMultiplier: 1
+  rollMultiplier: 0.01
   rollMultiplierThroughoutTurn:
     serializedVersion: 2
     m_Curve:
@@ -65,7 +65,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.25
+      time: 0.4
       value: 1
       inSlope: 0
       outSlope: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.75
+      time: 0.6
       value: 1
       inSlope: 0
       outSlope: 0
