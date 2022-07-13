@@ -29,8 +29,6 @@ public class CameraController : FallbackClickHandler
 
     private float targetViewHeight = 0f;
 
-    private bool isDragging = false;
-
     private void Awake()
     {
         camera = GetComponent<Camera>();
@@ -54,27 +52,8 @@ public class CameraController : FallbackClickHandler
     {
         HandleCameraZoomControls();
         HandleCameraZoomEasing();
-        HandleCameraDrag();
 
         SetCameraProperties();
-    }
-
-    private void HandleCameraDrag()
-    {
-        if (isDragging)
-        {
-            if (!Input.GetMouseButton(0))
-            {
-                isDragging = false;
-                return;
-            }
- 
-            var mousePositionDelta = camera.ScreenToViewportPoint(Input.mousePosition - dragClickStartPosition);
-            mousePositionDelta.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
-            var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
-     
-            transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
-        }
     }
 
     public override void OnClick()
@@ -87,7 +66,19 @@ public class CameraController : FallbackClickHandler
         dragClickStartPosition = Input.mousePosition;
         dragCameraStartPosition = transform.position;
         dragCameraStartPosition.Scale(new Vector3(1f, 0f, 1f));
-        isDragging = true;
+    }
+
+    public override void OnUpdateClick()
+    {
+        var mousePositionDelta = camera.ScreenToViewportPoint(Input.mousePosition - dragClickStartPosition);
+        mousePositionDelta.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
+        var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
+ 
+        transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
+    }
+
+    public override void OnRelease()
+    {
     }
 
     private void HandleCameraZoomControls()

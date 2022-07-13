@@ -13,6 +13,8 @@ public class ClickHandler : MonoBehaviour
     [SerializeField]
     private ClickableObjects clickableObjects = null;
 
+    private bool fallbackHandlerClicked = false;
+
     private void Awake()
     {
         Assert.IsNotNull(fallbackClickHandler);
@@ -31,6 +33,19 @@ public class ClickHandler : MonoBehaviour
             if (!TryClickClickableObjects())
             {
                 fallbackClickHandler.OnClick();
+                fallbackHandlerClicked = true;
+            }
+        }
+        else if (fallbackHandlerClicked)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                fallbackClickHandler.OnUpdateClick();
+            }
+            else
+            {
+                fallbackClickHandler.OnRelease();
+                fallbackHandlerClicked = false;
             }
         }
     }
