@@ -77,7 +77,7 @@ public class CameraController : FallbackClickHandler
         transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
     }
 
-    public override void OnRelease()
+    public override void OnReleased()
     {
     }
 

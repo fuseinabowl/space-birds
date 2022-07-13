@@ -6,6 +6,6 @@ public abstract class FallbackClickHandler : MonoBehaviour
 {
     public abstract void OnClick();
     public abstract void OnUpdateClick();
-    public abstract void OnRelease();
+    public abstract void OnReleased();
     public abstract Vector2 MousePositionToGamePoint(Vector2 mousePosition);
 }

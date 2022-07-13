@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 public class ClickableObject : MonoBehaviour
 {
@@ -15,6 +16,11 @@ public class ClickableObject : MonoBehaviour
 
     [SerializeField]
     private ClickableObjects clickableObjects = null;
+
+    [SerializeField]
+    private UnityEvent onClicked = null;
+    [SerializeField]
+    private UnityEvent onReleased = null;
 
     private float clickStartTime;
     private Vector2 preClickPosition;
@@ -34,6 +40,7 @@ public class ClickableObject : MonoBehaviour
             getCircle = GetCircle,
             onClicked = OnClicked,
             onUpdateClick = OnDragged,
+            onReleased = OnReleased,
         };
         clickableObjects.clickableObjects.Add(remoteClickableObject);
     }
@@ -67,6 +74,8 @@ public class ClickableObject : MonoBehaviour
         clickStartTime = Time.unscaledTime;
         preClickPosition = new Vector2(transform.position.x, transform.position.z);
         targetPosition = preClickPosition;
+
+        onClicked?.Invoke();
     }
 
     private void OnDragged(Vector2 mousePosition)
@@ -82,6 +91,11 @@ public class ClickableObject : MonoBehaviour
                 transform.position = MousePositionToWorldPosition(mousePosition);
             }
         }
+    }
+
+    private void OnReleased(Vector2 mousePosition)
+    {
+        onReleased?.Invoke();
     }
 
     private Vector3 MousePositionToWorldPosition(Vector2 mousePosition)

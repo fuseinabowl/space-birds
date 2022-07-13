@@ -45,7 +45,7 @@ public class ClickHandler : MonoBehaviour
             }
             else
             {
-                fallbackClickHandler.OnRelease();
+                fallbackClickHandler.OnReleased();
                 fallbackHandlerClicked = false;
             }
         }
@@ -60,7 +60,7 @@ public class ClickHandler : MonoBehaviour
                 }
                 else
                 {
-                    clickedObject.onRelease?.Invoke(mouseClickPoint);
+                    clickedObject.onReleased?.Invoke(mouseClickPoint);
                     clickedObject = null;
                 }
             }

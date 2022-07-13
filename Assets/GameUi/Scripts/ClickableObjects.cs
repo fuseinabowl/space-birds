@@ -17,7 +17,7 @@ public class ClickableObjects : ScriptableObject
         public GetCircle getCircle;
         public Event onClicked;
         public Event onUpdateClick;
-        public Event onRelease;
+        public Event onReleased;
 
         public bool alive = true;
     }
