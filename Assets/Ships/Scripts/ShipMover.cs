@@ -12,6 +12,9 @@ public class ShipMover : MonoBehaviour, ITurnListener
     [SerializeField]
     private ClickableObject nextTurnEndMarker = null;
 
+    [SerializeField]
+    private float extendVelocityDistanceWhenPlacingMarker = 20f;
+
     private Vector2 turnStartPosition;
     private Vector2 turnEndPosition;
     private Vector2 midPoint;
@@ -95,7 +98,7 @@ public class ShipMover : MonoBehaviour, ITurnListener
     private void MoveMovementMarkerToContinuedMovementPosition()
     {
         var endVelocity = turnEndPosition - midPoint;
-        var extendedPosition = turnEndPosition + 2f * endVelocity;
+        var extendedPosition = turnEndPosition + extendVelocityDistanceWhenPlacingMarker * endVelocity.normalized;
         nextTurnEndMarker.transform.position = FlatPositionToWorldPosition(extendedPosition);
     }
 
