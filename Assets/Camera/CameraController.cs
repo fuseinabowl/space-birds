@@ -112,11 +112,10 @@ public class CameraController : FallbackClickHandler
 
     public override Vector2 MousePositionToGamePoint(Vector2 mousePosition)
     {
-        var mousePositionInViewport = camera.ScreenToViewportPoint(mousePosition);
+        var mousePositionInViewport = camera.ScreenToViewportPoint(mousePosition) - 0.5f * new Vector3(1f, 1f, 0f);
         mousePositionInViewport.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
         var playerViewCenter = transform.position;
-        playerViewCenter.Scale(new Vector3(1f, 0f, 1f));
-        var mousePositionInWorld = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionInViewport) + playerViewCenter;
+        var mousePositionInWorld = (Vector2)mousePositionInViewport + new Vector2(playerViewCenter.x, playerViewCenter.z);
         return mousePositionInWorld;
     }
 }
