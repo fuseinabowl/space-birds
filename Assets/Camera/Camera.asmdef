@@ -1,3 +1,16 @@
 {
-	"name": "Camera"
+    "name": "Camera",
+    "rootNamespace": "",
+    "references": [
+        "GUID:27cc64e7143a8d04897451e2cf955ed2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
