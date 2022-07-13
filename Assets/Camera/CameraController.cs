@@ -41,8 +41,14 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        HandleCameraZoom();
+        HandleCameraDrag();
+
         SetCameraProperties();
- 
+    }
+
+    private void HandleCameraDrag()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             dragClickStartPosition = Input.mousePosition;
@@ -58,5 +64,9 @@ public class CameraController : MonoBehaviour
         var mouseWorldDelta = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionDelta);
  
         transform.position = dragCameraStartPosition - mouseWorldDelta * dragSpeed + Vector3.up * clipMiddleDistance;
+    }
+
+    private void HandleCameraZoom()
+    {
     }
 }
