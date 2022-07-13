@@ -13,6 +13,10 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     [FormerlySerializedAs("viewWidth")]
     private float viewHeight = 20f;
+    [SerializeField]
+    private Vector2 viewHeightRange = new Vector2(10f, 40f);
+    [SerializeField]
+    private float zoomScrollSpeed = 1f;
 
     [SerializeField]
     private float dragSpeed = 1f;
@@ -68,5 +72,15 @@ public class CameraController : MonoBehaviour
 
     private void HandleCameraZoom()
     {
+        var scroll = Input.mouseScrollDelta.y;
+        // use minus scroll to scroll-zoom in the intuitive direction
+        var zoomLogDelta = -scroll * zoomScrollSpeed;
+        if (zoomLogDelta != 0f)
+        {
+            var currentViewHeightInLogSpace = Mathf.Log(viewHeight);
+            var newViewHeightInLogSpace = currentViewHeightInLogSpace + zoomLogDelta;
+            var newViewHeightInNormalSpace = Mathf.Exp(newViewHeightInLogSpace);
+            viewHeight = Mathf.Clamp(newViewHeightInNormalSpace, viewHeightRange.x, viewHeightRange.y);
+        }
     }
 }
