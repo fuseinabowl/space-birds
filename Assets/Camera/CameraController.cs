@@ -109,4 +109,14 @@ public class CameraController : FallbackClickHandler
         var delta = targetViewHeight - viewHeight;
         viewHeight = targetViewHeight - delta * Mathf.Exp(-Time.unscaledDeltaTime * zoomEasingSpeed);
     }
+
+    public override Vector2 MousePositionToGamePoint(Vector2 mousePosition)
+    {
+        var mousePositionInViewport = camera.ScreenToViewportPoint(mousePosition);
+        mousePositionInViewport.Scale(new Vector3(viewHeight * camera.aspect, viewHeight, 0f));
+        var playerViewCenter = transform.position;
+        playerViewCenter.Scale(new Vector3(1f, 0f, 1f));
+        var mousePositionInWorld = Grid.Swizzle(GridLayout.CellSwizzle.XZY, mousePositionInViewport) + playerViewCenter;
+        return mousePositionInWorld;
+    }
 }

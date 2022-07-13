@@ -15377,6 +15377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallbackClickHandler: {fileID: 496072320}
+  clickableObjects: {fileID: 11400000, guid: 2f4954accfbc8a241921f3ef4b12b198, type: 2}
 --- !u!1001 &4527902329509689477
 PrefabInstance:
   m_ObjectHideFlags: 0
