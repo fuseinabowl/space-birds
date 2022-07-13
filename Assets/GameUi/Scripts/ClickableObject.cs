@@ -9,7 +9,12 @@ public class ClickableObject : MonoBehaviour
     private float radius = 1f;
 
     [SerializeField]
+    private float timeUntilTrackMouse = 0.1f;
+
+    [SerializeField]
     private ClickableObjects clickableObjects = null;
+
+    private float clickStartTime;
 
     private void Awake()
     {
@@ -22,7 +27,8 @@ public class ClickableObject : MonoBehaviour
     {
         remoteClickableObject = new ClickableObjects.ClickableObject{
             getCircle = GetCircle,
-            onClicked = OnClicked
+            onClicked = OnClicked,
+            onUpdateClick = OnDragged,
         };
         clickableObjects.clickableObjects.Add(remoteClickableObject);
     }
@@ -36,12 +42,22 @@ public class ClickableObject : MonoBehaviour
     private ClickableObjects.Circle GetCircle()
     {
         return new ClickableObjects.Circle{
-            position = new Vector2(transform.position.x, transform.position.y),
+            position = new Vector2(transform.position.x, transform.position.z),
             radius = radius
         };
     }
 
-    private void OnClicked()
+    private void OnClicked(Vector2 mousePosition)
     {
+        clickStartTime = Time.unscaledTime;
+    }
+
+    private void OnDragged(Vector2 mousePosition)
+    {
+        var timeSinceClick = Time.unscaledTime - clickStartTime;
+        if (timeUntilTrackMouse < timeSinceClick)
+        {
+            transform.position = new Vector3(mousePosition.x, 0f, mousePosition.y);
+        }
     }
 }

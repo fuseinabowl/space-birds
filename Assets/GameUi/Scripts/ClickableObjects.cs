@@ -11,11 +11,15 @@ public class ClickableObjects : ScriptableObject
         public float radius;
     }
     public delegate Circle GetCircle();
-    public delegate void OnClicked();
+    public delegate void Event(Vector2 cursorWorldPosition);
     public class ClickableObject
     {
         public GetCircle getCircle;
-        public OnClicked onClicked;
+        public Event onClicked;
+        public Event onUpdateClick;
+        public Event onRelease;
+
+        public bool alive = true;
     }
 
     public List<ClickableObject> clickableObjects = new List<ClickableObject>();

@@ -14,6 +14,7 @@ public class ClickHandler : MonoBehaviour
     private ClickableObjects clickableObjects = null;
 
     private bool fallbackHandlerClicked = false;
+    private ClickableObjects.ClickableObject clickedObject = null;
 
     private void Awake()
     {
@@ -48,6 +49,26 @@ public class ClickHandler : MonoBehaviour
                 fallbackHandlerClicked = false;
             }
         }
+        else if (clickedObject != null)
+        {
+            if (clickedObject.alive)
+            {
+                var mouseClickPoint = fallbackClickHandler.MousePositionToGamePoint(Input.mousePosition);
+                if (Input.GetMouseButton(0))
+                {
+                    clickedObject.onUpdateClick?.Invoke(mouseClickPoint);
+                }
+                else
+                {
+                    clickedObject.onRelease?.Invoke(mouseClickPoint);
+                    clickedObject = null;
+                }
+            }
+            else
+            {
+                clickedObject = null;
+            }
+        }
     }
 
     private bool TryClickClickableObjects()
@@ -56,7 +77,8 @@ public class ClickHandler : MonoBehaviour
         var clickableObject = GetBestClickableObject(mouseClickPoint);
         if (clickableObject != null)
         {
-            clickableObject.onClicked.Invoke();
+            clickableObject.onClicked?.Invoke(mouseClickPoint);
+            clickedObject = clickableObject;
             return true;
         }
 
