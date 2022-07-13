@@ -377,9 +377,9 @@ MonoBehaviour:
   clipWidth: 100
   clipMiddleDistance: 100
   viewHeight: 80
-  viewHeightRange: {x: 40, y: 400}
-  zoomScrollSpeed: 0.5
-  zoomEasingSpeed: 1
+  viewHeightRange: {x: 40, y: 150}
+  zoomScrollSpeed: 0.1
+  zoomEasingSpeed: 10
   dragSpeed: 1
 --- !u!1 &548896815
 GameObject:
