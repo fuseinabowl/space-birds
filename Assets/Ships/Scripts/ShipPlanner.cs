@@ -69,7 +69,7 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     private void MoveMovementMarkerToContinuedMovementPosition()
     {
         var endVelocity = shipMover.TurnEndPosition - shipMover.MidPoint;
-        var extendedPosition = shipMover.TurnEndPosition + extendVelocityDistanceWhenPlacingMarker * endVelocity.normalized;
+        var extendedPosition = shipMover.TurnEndPosition + endVelocity + extendVelocityDistanceWhenPlacingMarker * endVelocity.normalized;
         nextTurnEndMarker.transform.position = extendedPosition.ToWorldPosition();
     }
 
