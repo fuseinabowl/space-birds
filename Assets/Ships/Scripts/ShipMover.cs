@@ -65,9 +65,11 @@ public class ShipMover : MonoBehaviour
         var rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up);
 
         var acceleration = 2f * (turnStartPosition - 2f * midPoint + turnEndPosition);
-        var lateralAcceleration = delta.normalized.x * acceleration.y - delta.normalized.y * acceleration.x;
+        var normalizedDelta = delta.normalized;
+        var lateralAcceleration = normalizedDelta.x * acceleration.y - normalizedDelta.y * acceleration.x;
+        var requiredRoll = lateralAcceleration / delta.magnitude;
         var currentRollMultiplier = rollMultiplier * rollMultiplierThroughoutTurn.Evaluate(elapsedTimeProportionThisTurn);
-        var roll = Quaternion.LookRotation(Vector3.forward, Vector3.up + Vector3.left * lateralAcceleration * currentRollMultiplier);
+        var roll = Quaternion.LookRotation(Vector3.forward, Vector3.up + Vector3.left * requiredRoll * currentRollMultiplier);
 
         var transverseAcceleration = Vector2.Dot(delta.normalized, acceleration);
         currentEngineRev = Mathf.Max(currentEngineRev - Time.deltaTime * engineRevReductionRate, transverseAcceleration);

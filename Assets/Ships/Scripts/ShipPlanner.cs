@@ -60,6 +60,7 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
         var nextMoveInitialEndPosition = CalculateNextMoveInitialEndPosition();
         MoveMovementMarkerToContinuedMovementPosition(nextMoveInitialEndPosition);
         UpdatePlannedPathIndicator(nextMoveInitialEndPosition);
+        UpdateMovementMarkerRotation(nextMoveInitialEndPosition);
         ShowMovementMarker();
     }
 
@@ -90,6 +91,7 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     private void OnEndMarkerMoved(Vector2 newPosition)
     {
         UpdatePlannedPathIndicator(newPosition);
+        UpdateMovementMarkerRotation(newPosition);
     }
 
     private void UpdatePlannedPathIndicator(Vector2 nextMoveInitialEndPosition)
@@ -99,5 +101,13 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
             var pointTime = (float)pointIndex / (plannedPath.positionCount - 1);
             return ShipMover.QuadBezier(shipMover.TurnEndPosition, shipMover.TurnEndPosition + previousTurnFinalVelocity, nextMoveInitialEndPosition, pointTime).ToWorldPosition();
         }).ToArray());
+    }
+
+    private void UpdateMovementMarkerRotation(Vector2 nextMoveEndPosition)
+    {
+        var previousTurnFinalVelocity = shipMover.TurnEndPosition - shipMover.MidPoint;
+        var nextTurnMidPoint = shipMover.TurnEndPosition + previousTurnFinalVelocity;
+        var endDirection = nextMoveEndPosition - nextTurnMidPoint;
+        nextTurnEndMarker.transform.rotation = Quaternion.LookRotation(endDirection.ToWorldPosition(), Vector3.up);
     }
 }
