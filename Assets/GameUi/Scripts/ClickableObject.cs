@@ -22,7 +22,8 @@ public class ClickableObject : MonoBehaviour
     [SerializeField]
     private UnityEvent onReleased = null;
 
-    public delegate void OnMoved(Vector3 newPosition);
+    public delegate void OnMoved(Vector2 newPosition);
+    public OnMoved onMoved = null;
 
     private float clickStartTime;
     private Vector2 preClickPosition;
@@ -56,6 +57,7 @@ public class ClickableObject : MonoBehaviour
         var proportionOfTimeThroughMovement = timeSinceStartMoving / lerpToMouseDuration;
         var outputPosition = Vector2.Lerp(preClickPosition, targetPosition, proportionOfTimeThroughMovement);
         transform.position = MousePositionToWorldPosition(outputPosition);
+        onMoved?.Invoke(outputPosition);
     }
 
     private void OnDisable()
@@ -90,9 +92,10 @@ public class ClickableObject : MonoBehaviour
             targetPosition = mousePosition;
             if (timeSinceClick > timeUntilTrackMouse + lerpToMouseDuration)
             {
-                // skip waiting for this class's update, guarantees to avoid one frame of latency
+                // skip waiting for this class's update, guarantees avoiding one frame of latency
                 preClickPosition = mousePosition;
                 transform.position = MousePositionToWorldPosition(mousePosition);
+                onMoved?.Invoke(mousePosition);
             }
         }
     }

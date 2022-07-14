@@ -33,6 +33,7 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     private void OnEnable()
     {
         turnSettings.turnListeners.Add(this);
+        nextTurnEndMarker.onMoved += OnEndMarkerMoved;
     }
 
     private void Update()
@@ -42,6 +43,7 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
 
     private void OnDisable()
     {
+        nextTurnEndMarker.onMoved -= OnEndMarkerMoved;
         turnSettings.turnListeners.Remove(this);
     }
 
@@ -55,8 +57,9 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
 
     void ITurnListener.OnTurnEnded()
     {
-        MoveMovementMarkerToContinuedMovementPosition();
-        UpdatePlannedPathIndicator();
+        var nextMoveInitialEndPosition = CalculateNextMoveInitialEndPosition();
+        MoveMovementMarkerToContinuedMovementPosition(nextMoveInitialEndPosition);
+        UpdatePlannedPathIndicator(nextMoveInitialEndPosition);
         ShowMovementMarker();
     }
 
@@ -66,11 +69,16 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
         nextTurnEndMarker.gameObject.SetActive(false);
     }
 
-    private void MoveMovementMarkerToContinuedMovementPosition()
+    private Vector2 CalculateNextMoveInitialEndPosition()
     {
         var endVelocity = shipMover.TurnEndPosition - shipMover.MidPoint;
         var extendedPosition = shipMover.TurnEndPosition + endVelocity + extendVelocityDistanceWhenPlacingMarker * endVelocity.normalized;
-        nextTurnEndMarker.transform.position = extendedPosition.ToWorldPosition();
+        return extendedPosition;
+    }
+
+    private void MoveMovementMarkerToContinuedMovementPosition(Vector2 nextMoveInitialEndPosition)
+    {
+        nextTurnEndMarker.transform.position = nextMoveInitialEndPosition.ToWorldPosition();
     }
 
     private void ShowMovementMarker()
@@ -79,12 +87,17 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
         plannedPath.gameObject.SetActive(true);
     }
 
-    private void UpdatePlannedPathIndicator()
+    private void OnEndMarkerMoved(Vector2 newPosition)
+    {
+        UpdatePlannedPathIndicator(newPosition);
+    }
+
+    private void UpdatePlannedPathIndicator(Vector2 nextMoveInitialEndPosition)
     {
         var previousTurnFinalVelocity = shipMover.TurnEndPosition - shipMover.MidPoint;
         plannedPath.SetPositions(Enumerable.Range(0, plannedPath.positionCount).Select(pointIndex => {
-            var pointTime = (float)pointIndex / plannedPath.positionCount;
-            return ShipMover.QuadBezier(shipMover.TurnEndPosition, shipMover.TurnEndPosition + previousTurnFinalVelocity, nextTurnEndMarker.transform.position.ToGamePosition(), pointTime).ToWorldPosition();
+            var pointTime = (float)pointIndex / (plannedPath.positionCount - 1);
+            return ShipMover.QuadBezier(shipMover.TurnEndPosition, shipMover.TurnEndPosition + previousTurnFinalVelocity, nextMoveInitialEndPosition, pointTime).ToWorldPosition();
         }).ToArray());
     }
 }
