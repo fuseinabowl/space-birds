@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa210f1c5bd2c74fb9fdea381e457db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rollMultiplier: 0.01
+  rollMultiplier: 0.5
   rollMultiplierThroughoutTurn:
     serializedVersion: 2
     m_Curve:

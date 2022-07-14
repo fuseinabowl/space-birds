@@ -15271,9 +15271,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship
       objectReference: {fileID: 0}
-    - target: {fileID: 4680593125496598628, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 2534964839176971238, guid: a37f334e36eab5c46a8cea046441bd5f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7ea2e6969d4c614e9427ee568d54fd2, type: 3}
