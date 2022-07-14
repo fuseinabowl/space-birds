@@ -22,6 +22,8 @@ public class ClickableObject : MonoBehaviour
     [SerializeField]
     private UnityEvent onReleased = null;
 
+    public delegate void OnMoved(Vector3 newPosition);
+
     private float clickStartTime;
     private Vector2 preClickPosition;
     private Vector2 targetPosition;

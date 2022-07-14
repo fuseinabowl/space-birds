@@ -5,17 +5,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Assertions;
 
-public class ShipMover : MonoBehaviour, ITurnListener
+public class ShipMover : MonoBehaviour
 {
-    [SerializeField]
-    private TurnSettings turnSettings = null;
-
-    [SerializeField]
-    private ClickableObject nextTurnEndMarker = null;
-
-    [SerializeField]
-    private float extendVelocityDistanceWhenPlacingMarker = 20f;
-
     [SerializeField]
     private float rollMultiplier = 1f;
     [SerializeField]
@@ -41,14 +32,14 @@ public class ShipMover : MonoBehaviour, ITurnListener
 
     private Vector2 turnStartPosition;
     private Vector2 turnEndPosition;
+    public Vector2 TurnEndPosition => turnEndPosition;
     private Vector2 midPoint;
+    public Vector2 MidPoint => midPoint;
     private float turnStartTime;
     private float currentEngineRev;
 
     private void Awake()
     {
-        Assert.IsNotNull(turnSettings);
-        Assert.IsNotNull(nextTurnEndMarker);
     }
 
     private void Start()
@@ -62,15 +53,10 @@ public class ShipMover : MonoBehaviour, ITurnListener
         }).ToList();
     }
 
-    private void OnEnable()
-    {
-        turnSettings.turnListeners.Add(this);
-    }
-
-    private void Update()
+    public void UpdateFromPlanner(float turnLength)
     {
         var elapsedTimeThisTurn = Time.time - turnStartTime;
-        var elapsedTimeProportionThisTurn = elapsedTimeThisTurn / turnSettings.TurnLengthInSeconds;
+        var elapsedTimeProportionThisTurn = elapsedTimeThisTurn / turnLength;
         var position = QuadBezier(turnStartPosition, midPoint, turnEndPosition, elapsedTimeProportionThisTurn);
         var delta = 2f * elapsedTimeProportionThisTurn * (turnStartPosition - 2f * midPoint + turnEndPosition)
                   +                                 1f * (-2f * turnStartPosition + 2f * midPoint);
@@ -98,16 +84,11 @@ public class ShipMover : MonoBehaviour, ITurnListener
             shape.angle = particleConeAngle;
         }
 
-        transform.position = FlatPositionToWorldPosition(position);
+        transform.position = position.ToWorldPosition();
         transform.rotation = rotation * roll;
     }
 
-    private void OnDisable()
-    {
-        turnSettings.turnListeners.Remove(this);
-    }
-
-    private void PrepareForNextTurn(float turnStartTime, Vector2 nextEndPosition)
+    public void PrepareForNextTurn(float turnStartTime, Vector2 nextEndPosition)
     {
         var previousTurnEndVelocity = turnEndPosition - midPoint;
         this.turnStartTime = turnStartTime;
@@ -124,41 +105,5 @@ public class ShipMover : MonoBehaviour, ITurnListener
             Vector2.Lerp(mid, end, time),
             time
         );
-    }
-
-    void ITurnListener.OnTurnStarted(float turnStartTime)
-    {
-        var nextEndPosition = nextTurnEndMarker.TargetPosition;
-        PrepareForNextTurn(turnStartTime, nextEndPosition);
-
-        HideMovementMarker();
-    }
-
-    void ITurnListener.OnTurnEnded()
-    {
-        MoveMovementMarkerToContinuedMovementPosition();
-        ShowMovementMarker();
-    }
-
-    private void HideMovementMarker()
-    {
-        nextTurnEndMarker.gameObject.SetActive(false);
-    }
-
-    private void MoveMovementMarkerToContinuedMovementPosition()
-    {
-        var endVelocity = turnEndPosition - midPoint;
-        var extendedPosition = turnEndPosition + extendVelocityDistanceWhenPlacingMarker * endVelocity.normalized;
-        nextTurnEndMarker.transform.position = FlatPositionToWorldPosition(extendedPosition);
-    }
-
-    private void ShowMovementMarker()
-    {
-        nextTurnEndMarker.gameObject.SetActive(true);
-    }
-
-    private Vector3 FlatPositionToWorldPosition(Vector2 vector)
-    {
-        return new Vector3(vector.x, 0f, vector.y);
     }
 }
