@@ -30,6 +30,9 @@ public class ClickableObject : MonoBehaviour
     private Vector2 targetPosition;
     public Vector2 TargetPosition => targetPosition;
 
+    public delegate Vector2 ClampPosition(Vector2 inputPosition);
+    public ClampPosition positionClamper = null;
+
     private void Awake()
     {
         Assert.IsNotNull(clickableObjects);
@@ -40,7 +43,7 @@ public class ClickableObject : MonoBehaviour
     private void OnEnable()
     {
         clickStartTime = 0f;
-        preClickPosition = targetPosition = new Vector2(transform.position.x, transform.position.z);
+        preClickPosition = targetPosition = SafeClampPosition(new Vector2(transform.position.x, transform.position.z));
         remoteClickableObject = new ClickableObjects.ClickableObject{
             getCircle = GetCircle,
             onClicked = OnClicked,
@@ -89,7 +92,7 @@ public class ClickableObject : MonoBehaviour
         var timeSinceClick = Time.unscaledTime - clickStartTime;
         if (timeSinceClick > timeUntilTrackMouse)
         {
-            targetPosition = mousePosition;
+            targetPosition = SafeClampPosition(mousePosition);
             if (timeSinceClick > timeUntilTrackMouse + lerpToMouseDuration)
             {
                 // skip waiting for this class's update, guarantees avoiding one frame of latency
@@ -108,5 +111,17 @@ public class ClickableObject : MonoBehaviour
     private Vector3 MousePositionToWorldPosition(Vector2 mousePosition)
     {
         return new Vector3(mousePosition.x, 0f, mousePosition.y);
+    }
+
+    private Vector2 SafeClampPosition(Vector2 inputPosition)
+    {
+        if (positionClamper != null)
+        {
+            return positionClamper(inputPosition);
+        }
+        else
+        {
+            return inputPosition;
+        }
     }
 }

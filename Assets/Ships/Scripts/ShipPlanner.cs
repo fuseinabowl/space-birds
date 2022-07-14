@@ -19,6 +19,13 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     [SerializeField]
     private float extendVelocityDistanceWhenPlacingMarker = 20f;
 
+    [SerializeField]
+    private float maxTurnAngle = 45f;
+    [SerializeField]
+    private float minSpeed = 20f;
+    [SerializeField]
+    private float maxSpeed = 20f;
+
     private ShipMover shipMover = null;
 
     private void Awake()
@@ -28,6 +35,11 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
         Assert.IsNotNull(plannedPath);
 
         shipMover = GetComponent<ShipMover>();
+    }
+
+    private void Start()
+    {
+        nextTurnEndMarker.positionClamper = ClampTargetPosition;
     }
 
     private void OnEnable()
@@ -109,5 +121,38 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
         var nextTurnMidPoint = shipMover.TurnEndPosition + previousTurnFinalVelocity;
         var endDirection = nextMoveEndPosition - nextTurnMidPoint;
         nextTurnEndMarker.transform.rotation = Quaternion.LookRotation(endDirection.ToWorldPosition(), Vector3.up);
+    }
+
+    private Vector2 ClampTargetPosition(Vector2 inputPosition)
+    {
+        var previousTurnFinalVelocity = shipMover.TurnEndPosition - shipMover.MidPoint;
+        var nextTurnMidPoint = shipMover.TurnEndPosition + previousTurnFinalVelocity;
+        var nextTurnIntendedVelocity = inputPosition - nextTurnMidPoint;
+
+        var polarAngle = Vector2.SignedAngle(previousTurnFinalVelocity, nextTurnIntendedVelocity);
+
+        if (polarAngle < -maxTurnAngle)
+        {
+            return nextTurnMidPoint + ProjectOntoBorderLine(previousTurnFinalVelocity, -maxTurnAngle, nextTurnIntendedVelocity);
+        }
+        else if (polarAngle > maxTurnAngle)
+        {
+            return nextTurnMidPoint + ProjectOntoBorderLine(previousTurnFinalVelocity, maxTurnAngle, nextTurnIntendedVelocity);
+        }
+        else
+        {
+            var polarRadius = nextTurnIntendedVelocity.magnitude;
+            var clampedRadius = Mathf.Clamp(polarRadius, minSpeed, maxSpeed);
+            return nextTurnMidPoint + nextTurnIntendedVelocity / polarRadius * clampedRadius;
+        }
+    }
+
+    private Vector2 ProjectOntoBorderLine(Vector2 baseLine, float additionalAngle, Vector2 pointToProject)
+    {
+        var borderWorldAngle = -Vector2.SignedAngle(Vector2.up, baseLine) - additionalAngle;
+        var borderLineDirection = new Vector2(Mathf.Sin(borderWorldAngle * Mathf.Deg2Rad), Mathf.Cos(borderWorldAngle * Mathf.Deg2Rad));
+        var closestPointOnBorderRadius = Vector2.Dot(pointToProject, borderLineDirection);
+        var clampedRadius = Mathf.Clamp(closestPointOnBorderRadius, minSpeed, maxSpeed);
+        return borderLineDirection * clampedRadius;
     }
 }

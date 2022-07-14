@@ -335,6 +335,9 @@ MonoBehaviour:
   nextTurnEndMarker: {fileID: 4680593125575339902}
   plannedPath: {fileID: 5163015591191203932}
   extendVelocityDistanceWhenPlacingMarker: 20
+  maxTurnAngle: 60
+  minSpeed: 5
+  maxSpeed: 20
 --- !u!1001 &2091031674097617195
 PrefabInstance:
   m_ObjectHideFlags: 0
