@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -13,6 +14,9 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     private ClickableObject nextTurnEndMarker = null;
 
     [SerializeField]
+    private LineRenderer plannedPath = null;
+
+    [SerializeField]
     private float extendVelocityDistanceWhenPlacingMarker = 20f;
 
     private ShipMover shipMover = null;
@@ -21,6 +25,7 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     {
         Assert.IsNotNull(turnSettings);
         Assert.IsNotNull(nextTurnEndMarker);
+        Assert.IsNotNull(plannedPath);
 
         shipMover = GetComponent<ShipMover>();
     }
@@ -51,11 +56,13 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     void ITurnListener.OnTurnEnded()
     {
         MoveMovementMarkerToContinuedMovementPosition();
+        UpdatePlannedPathIndicator();
         ShowMovementMarker();
     }
 
     private void HideMovementMarker()
     {
+        plannedPath.gameObject.SetActive(false);
         nextTurnEndMarker.gameObject.SetActive(false);
     }
 
@@ -69,5 +76,15 @@ public class ShipPlanner : MonoBehaviour, ITurnListener
     private void ShowMovementMarker()
     {
         nextTurnEndMarker.gameObject.SetActive(true);
+        plannedPath.gameObject.SetActive(true);
+    }
+
+    private void UpdatePlannedPathIndicator()
+    {
+        var previousTurnFinalVelocity = shipMover.TurnEndPosition - shipMover.MidPoint;
+        plannedPath.SetPositions(Enumerable.Range(0, plannedPath.positionCount).Select(pointIndex => {
+            var pointTime = (float)pointIndex / plannedPath.positionCount;
+            return ShipMover.QuadBezier(shipMover.TurnEndPosition, shipMover.TurnEndPosition + previousTurnFinalVelocity, nextTurnEndMarker.transform.position.ToGamePosition(), pointTime).ToWorldPosition();
+        }).ToArray());
     }
 }

@@ -98,7 +98,7 @@ public class ShipMover : MonoBehaviour
         midPoint = turnStartPosition + previousTurnEndVelocity; 
     }
 
-    private Vector2 QuadBezier(Vector2 start, Vector2 mid, Vector2 end, float time)
+    public static Vector2 QuadBezier(Vector2 start, Vector2 mid, Vector2 end, float time)
     {
         return Vector2.Lerp(
             Vector2.Lerp(start, mid, time),
